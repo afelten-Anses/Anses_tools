@@ -1,0 +1,98 @@
+#!/usr/bin/python
+# -*- coding: iso-8859-1 -*-
+import os, sys
+import argparse
+
+def get_parser():
+	"""
+	Parse arguments
+	@return: arguments list
+	@rtype: parser object
+	"""
+
+	parser = argparse.ArgumentParser(description='convert roary gene_presence_absence.Rtab output to pairwise matrix')
+
+	parser.add_argument('-i', action="store", dest='tab',
+						type=str, required=True, help='roary gene_presence_absence.Rtab output')
+
+	parser.add_argument('-o', action="store", dest='prefix',
+						type=str, default="output", help='prefix output (default:output)')
+	return parser
+
+
+
+
+def compare_list(liste1, liste2):
+
+	score = 0
+
+	for i in range(0,len(liste1)) :
+
+		if liste1[i] == liste2[i] :
+			score += 1
+
+	score_final = round(float(score)/float(len(liste1)), 6)	
+	
+	return score_final	
+
+
+
+
+
+#main function	
+def main():	
+
+
+	##########################################
+	#			Initialisation				 #
+	##########################################
+
+	
+	# Get arguments 
+	parser=get_parser()
+	
+	# Print parser.help if no arguments
+	if len(sys.argv)==1:
+		parser.print_help()
+		sys.exit(1)
+	
+	Arguments=parser.parse_args()
+
+	rtab_file = open(Arguments.tab, 'r')
+	lines = rtab_file.readlines()
+	rtab_file.close()
+
+	first_line = True
+	dico_genome = {}
+
+	for line in lines :
+
+		line = line.rstrip().split('\t')
+
+		if first_line :
+			first_line = False
+			genome_list = line[1:]
+
+		else :
+			i = 0
+			for element in line[1:]	:
+				if not genome_list[i] in dico_genome :
+					dico_genome[genome_list[i]] = []
+				dico_genome[genome_list[i]].append(element)
+				i+=1
+
+
+	output = open(Arguments.prefix + ".tsv", "w")
+	output.write('\t' + '\t'.join(genome_list) + '\n')
+
+	for genome in genome_list :	
+		output.write(genome)		
+		for genome_compare in genome_list :
+			distance = compare_list(dico_genome[genome], dico_genome[genome_compare])
+			output.write('\t' + str(distance))
+		output.write('\n')	
+
+	output.close()	
+
+if __name__ == "__main__":
+	main()	   		
