@@ -31,7 +31,7 @@ def compare_list(liste1, liste2):
 		if liste1[i] == liste2[i] :
 			score += 1
 
-	score_final = round(float(score)/float(len(liste1)), 6)	
+	score_final = 1.0 - round(float(score)/float(len(liste1)), 6)	
 	
 	return score_final	
 
