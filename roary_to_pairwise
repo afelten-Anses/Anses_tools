@@ -19,6 +19,9 @@ def get_parser():
 	parser.add_argument('-o', action="store", dest='prefix',
 						type=str, default="output", help='prefix output (default:output)')
 
+	parser.add_argument('--unweighted', action="store_true", dest='unweighted',
+                     default=False, help='compute an unweighted distance')
+
 	parser.add_argument('--onlyAccessory', action="store_true", dest='Accessory',
                      default=False, help='compute distance without core genes')
 
@@ -39,6 +42,18 @@ def compare_list(liste1, liste2):
 	score_final = 1.0 - round(float(score)/float(len(liste1)), 6)	
 	
 	return score_final	
+
+
+def compare_list2(liste1, liste2): # sans pondération
+
+	score = 0
+
+	for i in range(0, len(liste1)):
+
+		if liste1[i] != liste2[i]:
+			score += 1
+
+	return score
 
 
 def remove_coregenome(Rtab_file):
@@ -117,7 +132,10 @@ def main():
 	for genome in genome_list :	
 		output.write(genome)		
 		for genome_compare in genome_list :
-			distance = compare_list(dico_genome[genome], dico_genome[genome_compare])
+			if Arguments.unweighted :
+				distance = compare_list2(dico_genome[genome], dico_genome[genome_compare])
+			else:	
+				distance = compare_list(dico_genome[genome], dico_genome[genome_compare])
 			output.write('\t' + str(distance))
 		output.write('\n')		
 

@@ -1,0 +1,114 @@
+#!/usr/bin/python
+# -*- coding: iso-8859-1 -*-
+import os, sys, time
+import argparse
+import copy
+from decimal import Decimal
+import dendropy
+import re
+
+
+##################################
+#####  Arguments definition  #####
+##################################
+
+
+def get_parser():
+	#Fonction permettant de pourvoir demander des arguments
+
+	parser = argparse.ArgumentParser(description='Create a rerooted taxonomic tree from a pairwise matrix')
+
+	parser.add_argument('-i', action="store", dest='matrix', 
+						type=str, required=True,
+						help='pairwise matrix (REQUIRED)')
+
+	parser.add_argument('-o', action="store", dest='output', 
+                     type=str, default='tree.nwk', help='output newick name (default:tree.nwk)')
+		
+	parser.add_argument('--UPGMA', dest='UPGMA', action='store_true',
+						help='use UPGMA algorithm (default:NJ)', default=False)
+
+	parser.add_argument('--midpoint', dest='midpoint', action='store_true', 
+						help='root tree with midpoint', default=False)                    
+
+	return parser
+
+
+########################################################
+#####  Create rerooted taxonomic tree (functions)  #####
+########################################################
+
+def make_nj_tree(mash_matrix):
+	# Création de l'objet matrice à partir de la matrice au format tsv  obtenu avec Mash
+	# Création de l'arbre avec la méthode neighbour-Joining
+
+	pdm = dendropy.PhylogeneticDistanceMatrix.from_csv(src=open(mash_matrix), delimiter="\t")
+	tree = pdm.nj_tree()
+
+	return tree
+
+def make_upgma_tree(mash_matrix):
+	#Création de l'objet matrice à partir de la matrice au format tsv  obtenu avec Mash
+	#Création de l'arbre avec la méthode upgma
+
+	pdm = dendropy.PhylogeneticDistanceMatrix.from_csv(src=open(mash_matrix), delimiter="\t")
+	tree = pdm.upgma_tree()
+
+	return tree
+
+
+def make_reroot_tree(tree):
+	#Enracinement de l'arbre
+
+	try:
+		tree.reroot_at_midpoint(update_bipartitions=False, suppress_unifurcations=False)
+
+	except AssertionError:
+		print "midpoint error"
+
+	return tree
+
+def write_reroot_tree(reroot_tree, tree_file_name):
+	# Transpose l'arbre dans le fichier tree_file_name
+
+	tree_file = open(tree_file_name, 'w')
+	tree_file.write(reroot_tree.as_string("newick"))
+	tree_file.close()
+	os.system("sed -i 's/\[&R\] //g' " + tree_file_name)
+
+
+###########################
+#####  Main function  #####
+###########################
+
+
+def main():
+
+	begin = time.time()
+	##################### gets arguments #####################
+
+	parser=get_parser()
+	
+	#print parser.help if no arguments
+	if len(sys.argv)==1:
+		parser.print_help()
+		sys.exit(1)
+	
+	# mettre tout les arguments dans la variable Argument
+	Arguments=parser.parse_args()
+
+	#####################  Create rerooted taxonomic tree  #####################
+	
+	if Arguments.UPGMA :
+		tree = make_upgma_tree(Arguments.matrix)
+	else :
+		tree = make_nj_tree(Arguments.matrix)
+	
+	if Arguments.midpoint :
+	    reroot_tree = make_reroot_tree(tree)
+	
+	write_reroot_tree(reroot_tree, Arguments.output)
+
+# lancer la fonction main()  au lancement du script
+if __name__ == "__main__":
+	main()	  
