@@ -61,30 +61,28 @@ def main():
 	genomes = db.GENOME
     
 	for element in os.listdir(Arguments.directory):
+		
+		files = os.listdir(Arguments.directory + '/' + element)      
+        	flag = False
 
-	    files = os.listdir(element)      
-        flag = False
+		for file in files :
 
-        for file in files :
+			if ".msh" in file :
+				flag = True
 
-            if ".msh" in file :
-                flag = True
+			elif "_assembly.fasta" in file :
+				assembly = file    
+				assembly_path = Arguments.directory + '/' + element + '/' + assembly
+				id_genome = '_'.join(file.split("_")[0:-1])
 
-            elif "_assembly.fasta" in file :
-                assembly = file    
-                assembly_path = Arguments.directory + '/' + element + '/' + assembly
-                id_genome = file.split("_")[0]
+		if not flag :
+			os.system("cp " + assembly_path + " .")
+			cmd = "mash sketch -p " + str(Arguments.NbThreads) + " -k " + Arguments.Ksize + " -s " + Arguments.Ssize + " -r -o " + id_genome + " " + assembly
+			os.system(cmd)    
+			os.system("mv " + id_genome + ".msh " + Arguments.directory + '/' + element + '/.')
+			os.system("rm " + assembly)
 
-        if not flag :
-
-            os.system("cp " + assembly_path + " .")
-            cmd = "mash sketch -p " + str(Arguments.NbThreads) + " -k " + Arguments.Ksize + " -s " + \
-            Arguments.Ssize + " -r -o " + id_genome + " " + assembly
-            os.system(cmd)    
-            os.system("mv " + id_genome + ".msh " + Arguments.directory + '/' + element + '/.')
-            os.system("rm assembly")
-
-            #genomes.update({'SampleID':id_genome},{"$set":{'Sketch':id_genome + ".msh"}},upsert=True)
+			genomes.update({'SampleID':id_genome},{"$set":{"Genome.Sketch":Arguments.directory.replace("/mnt/NAS/NASBIO1/","") + '/' + element + '/' + id_genome + ".msh"}},upsert=True)
 
 
 if __name__ == "__main__":
