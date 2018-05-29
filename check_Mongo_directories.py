@@ -45,7 +45,6 @@ def main():
 		sys.exit(1)
 	
 	Arguments=parser.parse_args()
-	note_file = Arguments.NASBIO1_path + "SAVE/restore.txt"
 
 	uri = "mongodb://" + Arguments.MongoUser + ":" + Arguments.MongoPassword + "@localhost/GAMeRdb"
 	client = MongoClient(uri)
@@ -54,6 +53,8 @@ def main():
 
 	if Arguments.NASBIO1_path[-1] != '/' :
 	    Arguments.NASBIO1_path = Arguments.NASBIO1_path + '/'
+
+	note_file = Arguments.NASBIO1_path + "SAVE/restore.txt"  
 
 	listDoc = genomes.find()
 
