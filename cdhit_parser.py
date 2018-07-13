@@ -100,6 +100,7 @@ def main():
                 is_cluster_reference.append('no')
                 prc = line[3].replace("+/",'')
                 prc = prc.replace('%','')
+                prc = prc.replace('-/','')
                 cluster_identity.append(prc)
 
     for i in range(0, cluster_length):
