@@ -68,7 +68,7 @@ def make_reroot_tree(tree):
 
 	return tree
 
-def write_reroot_tree(reroot_tree, tree_file_name):
+def write_tree(reroot_tree, tree_file_name):
 	# Transpose l'arbre dans le fichier tree_file_name
 
 	tree_file = open(tree_file_name, 'w')
@@ -105,9 +105,9 @@ def main():
 		tree = make_nj_tree(Arguments.matrix)
 	
 	if Arguments.midpoint :
-	    reroot_tree = make_reroot_tree(tree)
+	    tree = make_reroot_tree(tree)
 	
-	write_reroot_tree(reroot_tree, Arguments.output)
+	write_tree(tree, Arguments.output)
 
 # lancer la fonction main()  au lancement du script
 if __name__ == "__main__":
