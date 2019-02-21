@@ -63,7 +63,7 @@ def main():
     if Arguments.genbank :
         os.mkdir("ARTwork_genbank")	
 
-    uri = "mongodb://Kindle:Amazon@SAS-PP-LSCALC1/GAMeRdb"
+    uri = "mongodb://Kindle:Amazon@sas-vp-lsdb1/GAMeRdb"
     client = MongoClient(uri)
     db = client.GAMeRdb
     genomes = db.GENOME
