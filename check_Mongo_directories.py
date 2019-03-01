@@ -54,7 +54,7 @@ def main():
 	if Arguments.NASBIO1_path[-1] != '/' :
 	    Arguments.NASBIO1_path = Arguments.NASBIO1_path + '/'
 
-	note_file = Arguments.NASBIO1_path + "SAVE/restore.txt"  
+	note_file = Arguments.NASBIO1_path + "save/restore.txt"  
 
 	listDoc = genomes.find()
 
@@ -66,7 +66,7 @@ def main():
 	    genus = document['Phylogeny']['Genus']
         sampleID = document['SampleID']
 
-        directory_to_check = Arguments.NASBIO1_path + "DATA/GAMeR_DB/" + genus.upper() + '/' + sampleID
+        directory_to_check = Arguments.NASBIO1_path + "data/GAMeR_DB/" + genus.upper() + '/' + sampleID
 
         if not os.path.isdir(directory_to_check) :
             all_ok = False
