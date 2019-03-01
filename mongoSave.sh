@@ -1,6 +1,6 @@
 #!/bin/sh
 
-prefix="/mnt/NAS/NASBIO1/SAVE/mongoDB/"
+prefix="/global/bio/save/mongoDB/"
 jour=$(date +%Y%m%d)
 suffix=".gz"
 
