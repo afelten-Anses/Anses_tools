@@ -1,6 +1,6 @@
 #!/bin/sh
 
-prefix="/mnt/NAS/NASBIO1/SAVE/Redmine/"
+prefix="/global/bio/save/Redmine/"
 jour=$(date +%Y%m%d)
 suffix=".tar.gz"
 
