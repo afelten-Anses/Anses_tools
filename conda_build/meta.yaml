@@ -1,0 +1,27 @@
+package:
+    name: "anses_tools"
+    version: "0.1"
+
+source:
+    path: /home/afelten/Bureau/scratch/Anses_tools           
+
+requirements:
+    host:
+        - python    
+        - setuptools
+        - git
+
+    run:
+        - pymongo
+        - python=2.7 
+        - confindr
+        - mash
+        - dendropy
+        - multiqc
+
+about:
+    home: https://github.com/afelten-Anses/Anses_tools
+    license: GNU General Public v2 (GPLv2)
+    license_family: GPL2 
+    license_file: LICENSE
+    summary: Anses tools
