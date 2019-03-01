@@ -55,7 +55,7 @@ def main():
 	
 	Arguments=parser.parse_args()
 
-	uri = "mongodb://" + Arguments.MongoUser + ":" + Arguments.MongoPassword + "@localhost/GAMeRdb"
+	uri = "mongodb://" + Arguments.MongoUser + ":" + Arguments.MongoPassword + "@sas-vp-lsdb1/GAMeRdb"
 	client = MongoClient(uri)
 	db = client.GAMeRdb
 	genomes = db.GENOME
@@ -64,9 +64,6 @@ def main():
 		
 		files = os.listdir(Arguments.directory + '/' + element)      
         	flag = False
-
-		if element not in ["2015LSAL01587","2011_11534","201509794"]:
-			continue
 		
 		for file in files :
 
@@ -85,7 +82,7 @@ def main():
 			os.system("mv " + id_genome + ".msh " + Arguments.directory + '/' + element + '/.')
 			os.system("rm " + assembly)
 
-			genomes.update({'SampleID':id_genome},{"$set":{"Genome.Sketch":Arguments.directory.replace("/mnt/NAS/NASBIO1/","") + '/' + element + '/' + id_genome + ".msh"}},upsert=True)
+			genomes.update({'SampleID':id_genome},{"$set":{"Genome.Sketch":Arguments.directory.replace("/global/bio/","") + '/' + element + '/' + id_genome + ".msh"}},upsert=True)
 
 
 if __name__ == "__main__":
