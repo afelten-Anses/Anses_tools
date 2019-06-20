@@ -11,7 +11,7 @@ def get_parser():
 	@rtype: parser object
 	"""
 
-	parser = argparse.ArgumentParser(description='convert roary gene_presence_absence.Rtab output to pairwise matrix')
+	parser = argparse.ArgumentParser(description='compute assesory distance per cluster')
 
 	parser.add_argument('-i', action="store", dest='matrix',
 						type=str, required=True, help='roary_to_pairwise output with --unweighted and --onlyAccessory option')
