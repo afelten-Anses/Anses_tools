@@ -20,7 +20,7 @@ setuptools.setup(
         "Programming Language :: Python :: 2",
         "Operating System :: POSIX :: Linux",
     ],
-        scripts=["Magikln",
+        scripts=["Magikln.py",
              "cdhit_parser.py",
              "check_Mongo_directories.py",
              "confindr_filterTab.py",
