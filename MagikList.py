@@ -8,7 +8,7 @@ from bson.objectid import ObjectId
 
 def get_parser():
     
-    parser = argparse.ArgumentParser(description='make links from artwork outputs for a project id')
+    parser = argparse.ArgumentParser(description='make links from from a list of GAMeR database sample ID')
     
     parser.add_argument('-p', action="store", dest='listefile',
 						type=str, required=True, help='text file with one strain ID per line (REQUIRED)')
@@ -66,8 +66,8 @@ def main():
 
     ### boucle sampleID
     
-    lFile = open(listefile,'r')
-    lines = lFile.readslines()
+    lFile = open(Arguments.listefile,'r')
+    lines = lFile.readlines()
     lFile.close()
     
     for sampleID in lines :
@@ -102,9 +102,9 @@ def main():
                 filename = pwd.split('/')[-1]
                 
                 if Arguments.copy :
-                os.system("cp /global/bio/" + pwd + " ARTwork_vcf/.") 
+	                os.system("cp /global/bio/" + pwd + " ARTwork_vcf/.") 
                 else :
-                os.system("ln -sF /global/bio/" + pwd + " $PWD/ARTwork_vcf/" + filename) 
+        	        os.system("ln -sF /global/bio/" + pwd + " $PWD/ARTwork_vcf/" + filename) 
                     
             if Arguments.assembly :
                 
@@ -112,9 +112,9 @@ def main():
                 filename = pwd.split('/')[-1]
                 
                 if Arguments.copy :
-                os.system("cp /global/bio/" + pwd + " ARTwork_assembly/.") 
+                	os.system("cp /global/bio/" + pwd + " ARTwork_assembly/.") 
                 else :
-                os.system("ln -sF /global/bio/" + pwd + " $PWD/ARTwork_assembly/" + filename) 
+                	os.system("ln -sF /global/bio/" + pwd + " $PWD/ARTwork_assembly/" + filename) 
                     
             if Arguments.genbank :
                 
@@ -122,9 +122,9 @@ def main():
                 filename = pwd.split('/')[-1]
                 
                 if Arguments.copy :
-                os.system("cp /global/bio/" + pwd + " ARTwork_genbank/.") 
+                	os.system("cp /global/bio/" + pwd + " ARTwork_genbank/.") 
                 else :
-                os.system("ln -sF /global/bio/" + pwd + " $PWD/ARTwork_genbank/" + filename) 
+                	os.system("ln -sF /global/bio/" + pwd + " $PWD/ARTwork_genbank/" + filename) 
                 
 	
 if __name__ == "__main__":
